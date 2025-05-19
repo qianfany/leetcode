@@ -4,9 +4,22 @@ class Solution:
         :type s: str
         :rtype: int
         """
-        mx, start, chars = 0, 0, {}
-        for i in range(len(s)):
-            if s[i] in chars and start <= chars[s[i]]: start = chars[s[i]] + 1
-            else: mx = max(mx, i - start + 1)
-            chars[s[i]] = i
-        return mx
+        if not s:
+            return 0
+
+        distinct = set()
+        slow = 0
+        fast = 0
+        longest = 0
+
+        while fast < len(s):
+            if s[fast] in distinct:
+                distinct.remove(s[slow])
+                slow += 1
+            else:
+                distinct.add(s[fast])
+                fast += 1
+                longest = max(longest, fast - slow)
+        return longest
+
+
